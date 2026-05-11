@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurviMont Pyrénées</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cabin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #2d4a1e;
+    --moss: #4a7c3f;
+    --sage: #7aab6a;
+    --cream: #f5f0e8;
+    --earth: #8b6340;
+    --bark: #5c3d1e;
+    --snow: #ffffff;
+    --warm: #e8d5a3;
+    --fire: #c7521a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cabin', sans-serif;
+    background: var(--cream);
+    color: var(--forest);
+    overflow-x: hidden;
+  }
+
+  /* LANGUAGE SWITCHER */
+  .lang-bar {
+    background: var(--forest);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  .lang-btn {
+    padding: 12px 32px;
+    border: none;
+    background: transparent;
+    color: var(--warm);
+    font-family: 'Cabin', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .lang-btn.active {
+    background: var(--moss);
+    color: var(--snow);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.1);
+    color: var(--snow);
+  }
+
+  .lang-btn::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: rgba(255,255,255,0.2);
+  }
+  .lang-btn:last-child::after { display: none; }
+
+  /* SECTIONS LANGUE */
+  .lang-section { display: none; }
+  .lang-section.active { display: block; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background:
+      linear-gradient(to bottom, rgba(20,40,10,0.7) 0%, rgba(20,40,10,0.3) 60%, transparent 100%),
+      url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+  }
+
+  .logo-circle {
+    width: 130px;
+    height: 130px;
+    background: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    border: 4px solid var(--moss);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    font-size: 52px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: var(--snow);
+    font-weight: 900;
+    line-height: 1.05;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    letter-spacing: -1px;
+  }
+
+  .hero h1 span {
+    color: var(--sage);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--warm);
+    margin-top: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .hero-tagline {
+    margin-top: 28px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50px;
+    padding: 12px 28px;
+    color: var(--snow);
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 12px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .badge {
+    background: var(--moss);
+    color: var(--snow);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--moss);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-title span { color: var(--moss); }
+
+  .section-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #4a5a40;
+    max-width: 680px;
+  }
+
+  /* CONCEPT */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .concept-grid { grid-template-columns: 1fr; gap: 40px; }
+    .activities-grid { grid-template-columns: 1fr !important; }
+    .season-grid { grid-template-columns: 1fr !important; }
+    .info-strip { flex-direction: column !important; }
+  }
+
+  .concept-visual {
+    background: var(--forest);
+    border-radius: 20px;
+    padding: 40px;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-visual::before {
+    content: '🌲';
+    position: absolute;
+    font-size: 120px;
+    bottom: -20px;
+    right: -10px;
+    opacity: 0.15;
+  }
+
+  .concept-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .concept-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .concept-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .concept-item h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--sage);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .concept-item p {
+    font-size: 0.92rem;
+    color: rgba(245,240,232,0.8);
+    line-height: 1.6;
+  }
+
+  /* ACTIVITÉS */
+  .activities-section {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 80px 20px;
+  }
+
+  .activities-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .activities-section .section-label { color: var(--sage); }
+  .activities-section .section-title { color: var(--cream); }
+
+  .season-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .season-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: transform 0.3s, background 0.3s;
+  }
+
+  .season-card:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-4px);
+  }
+
+  .season-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  .season-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--warm);
+  }
+
+  .season-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .season-card ul li {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.8);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .season-card ul li::before {
+    content: '→';
+    color: var(--sage);
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  /* ÉCOLOGIE */
+  .eco-section {
+    background: linear-gradient(135deg, #f0ebe0, #e8e0d0);
+    padding: 80px 20px;
+    border-top: 3px solid var(--moss);
+    border-bottom: 3px solid var(--moss);
+  }
+
+  .eco-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 768px) { .eco-grid { grid-template-columns: 1fr; } }
+
+  .eco-card {
+    background: var(--snow);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    border-left: 4px solid var(--moss);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .eco-card .eco-emoji { font-size: 2rem; flex-shrink: 0; }
+
+  .eco-card h4 {
+    font-weight: 700;
+    color: var(--forest);
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  .eco-card p {
+    font-size: 0.88rem;
+    color: #6a7a60;
+    line-height: 1.6;
+  }
+
+  /* TARIFS */
+  .tarifs-section {
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tarif-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    max-width: 600px;
+  }
+
+  @media (max-width: 600px) { .tarif-cards { grid-template-columns: 1fr; } }
+
+  .tarif-card {
+    background: var(--forest);
+    border-radius: 20px;
+    padding: 36px 28px;
+    text-align: center;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tarif-card.featured {
+    background: var(--moss);
+    transform: scale(1.04);
+    box-shadow: 0 12px 40px rgba(74,124,63,0.4);
+  }
+
+  .tarif-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .tarif-unit {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .tarif-desc {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.75);
+    line-height: 1.6;
+  }
+
+  /* INFO STRIP */
+  .info-strip {
+    background: var(--bark);
+    padding: 40px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .info-item { color: var(--cream); }
+  .info-item .info-icon { font-size: 2rem; margin-bottom: 8px; }
+  .info-item .info-label {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 4px;
+  }
+  .info-item .info-val {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--cream);
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-cards {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .contact-card {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 20px 32px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .contact-card:hover {
+    background: var(--moss);
+    transform: translateY(-3px);
+  }
+
+  .contact-card .cc-icon { font-size: 1.4rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--forest);
+    color: rgba(245,240,232,0.5);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+
+  footer strong { color: var(--warm); }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--moss);
+    margin: 20px 0 40px;
+    border-radius: 2px;
+  }
+
+  /* FADE IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- BARRE DE LANGUE -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 Français</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+</div>
+
+<!-- ============ FRANÇAIS ============ -->
+<div class="lang-section active" id="section-fr">
+
+  <div class="hero">
+    <div class="logo-circle">🏔️</div>
+    <h1>SurviMont<br><span>Pyrénées</span></h1>
+    <p class="hero-sub">Survivre · Respecter · Partager</p>
+    <p class="hero-tagline">Expériences de survie douce en montagne</p>
+    <div class="hero-badges">
+      <span class="badge">👨‍👩‍👧‍👦 Familles</span>
+      <span class="badge">🌿 Écologie</span>
+      <span class="badge">📍 Argelès-Gazost</span>
+      <span class="badge">📅 Toute l'année</span>
+    </div>
+    <span class="scroll-hint">↓ Découvrir</span>
+  </div>
+
+  <section class="fade-in">
+    <div class="section-label">Qui sommes-nous</div>
+    <div class="section-title">Apprendre à vivre<br><span>avec la montagne</span></div>
+    <div class="divider"></div>
+    <div class="concept-grid">
+      <div>
+        <p class="section-text">SurviMont Pyrénées propose des expériences immersives pour apprendre à vivre en montagne tout en respectant la nature. Basée à Argelès-Gazost, au cœur du Parc national des Pyrénées, notre association accueille familles, locaux et touristes toute l'année.</p>
+        <p class="section-text" style="margin-top:20px">Chaque activité est un équilibre entre <strong>apprentissage concret</strong> et <strong>sensibilisation écologique</strong>. On ne vient pas conquérir la montagne — on vient apprendre à y vivre.</p>
+      </div>
+      <div class="concept-visual">
+        <div class="concept-item">
+          <div class="concept-icon">💧</div>
+          <div>
+            <h4>Purifier l'eau</h4>
+            <p>Comprendre le cycle de l'eau et la fragilité des sources en montagne</p>
+          </div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🦉</div>
+          <div>
+            <h4>Observation nocturne</h4>
+            <p>Découvrir la faune nocturne et les étoiles en montagne</p>
+          </div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🔥</div>
+          <div>
+            <h4>Faire du feu (théorique)</h4>
+            <p>Apprendre les techniques et la sécurité incendie en montagne</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="activities-section">
+    <div class="activities-inner fade-in">
+      <div class="section-label">Au programme</div>
+      <div class="section-title" style="color:var(--cream)">Activités <span style="color:var(--sage)">toute l'année</span></div>
+      <div class="divider"></div>
+      <div class="season-grid">
+        <div class="season-card">
+          <div class="season-icon">☀️</div>
+          <h3>Été</h3>
+          <ul>
+            <li>Bivouac d'initiation</li>
+            <li>Observation de la faune nocturne et des étoiles</li>
+            <li>Repas 100% nature & local</li>
+            <li>Orientation à la boussole et lecture de paysage</li>
+            <li>Missions "enquêteurs de nature" pour enfants</li>
+            <li>Balade à cheval</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">❄️</div>
+          <h3>Hiver</h3>
+          <ul>
+            <li>Techniques de déplacement et orientation en conditions hivernales</li>
+            <li>Reconnaître les signes de danger en montagne enneigée</li>
+            <li>Gérer son équipement et ses vêtements pour survivre au froid</li>
+            <li>Signaler sa position / appeler des secours sans réseau</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">🍂</div>
+          <h3>Intersaison</h3>
+          <ul>
+            <li>Ateliers de nœuds en salle</li>
+            <li>Fabriquer un kit de survie minimaliste</li>
+            <li>Premiers secours en nature</li>
+            <li>Échanges transfrontaliers</li>
+            <li>Sorties courtes d'observation saisonnière</li>
+            <li>Balade à cheval</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eco-section">
+    <div class="eco-inner fade-in">
+      <div class="section-label">Notre engagement</div>
+      <div class="section-title">Une montagne <span>à préserver</span></div>
+      <div class="divider"></div>
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-emoji">🌍</div>
+          <div>
+            <h4>Groupes limités</h4>
+            <p>Maximum 8 à 10 personnes par sortie pour réduire l'impact sur la végétation et la faune.</p>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🗑️</div>
+          <div>
+            <h4>Zéro déchet</h4>
+            <p>Pesée collective avant et après chaque sortie. Aucun déchet laissé sur le terrain.</p>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🌱</div>
+          <div>
+            <h4>Rotation des zones</h4>
+            <p>Jamais le même sentier deux semaines de suite. Partenariat avec le Parc national des Pyrénées.</p>
+          </div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🎒</div>
+          <div>
+            <h4>Matériel prêté</h4>
+            <p>Tout le matériel est fourni sur place — pas besoin d'acheter, réduction de la consommation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarifs-section fade-in">
+    <div class="section-label">Tarifs</div>
+    <div class="section-title">Accessible <span>à tous</span></div>
+    <div class="divider"></div>
+    <div class="tarif-cards">
+      <div class="tarif-card">
+        <div class="tarif-price">40€</div>
+        <span class="tarif-unit">par personne</span>
+        <p class="tarif-desc">La journée complète en montagne</p>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-price">75€</div>
+        <span class="tarif-unit">par personne</span>
+        <p class="tarif-desc">2 jours avec nuit en bivouac incluse</p>
+      </div>
+    </div>
+    <p style="margin-top:24px; color:#6a7a60; font-size:0.9rem">Tarif réduit sur demande · Quotient familial accepté · Matériel fourni</p>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-item"><div class="info-icon">📍</div><div class="info-label">Localisation</div><div class="info-val">Argelès-Gazost, 65400</div></div>
+    <div class="info-item"><div class="info-icon">📅</div><div class="info-label">Ouverture</div><div class="info-val">Toute l'année</div></div>
+    <div class="info-item"><div class="info-icon">👨‍👩‍👧‍👦</div><div class="info-label">Public</div><div class="info-val">Familles & tous niveaux</div></div>
+    <div class="info-item"><div class="info-icon">🌐</div><div class="info-label">Langues</div><div class="info-val">FR · EN · ES</div></div>
+  </div>
+
+  <div class="contact-section fade-in">
+    <div class="section-label">Nous contacter</div>
+    <div class="section-title">Prêt à partir <span>en montagne ?</span></div>
+    <div class="divider" style="margin:20px auto 0"></div>
+    <div class="contact-cards">
+      <a href="mailto:contact@survimont.fr" class="contact-card"><span class="cc-icon">✉️</span> contact@survimont.fr</a>
+      <a href="https://instagram.com/survimon65000" class="contact-card"><span class="cc-icon">📸</span> @survimon65000</a>
+      <a href="https://facebook.com/survimon65000" class="contact-card"><span class="cc-icon">📘</span> survimon65000</a>
+    </div>
+  </div>
+
+  <footer>
+    <strong>SurviMont Pyrénées</strong> · Association loi 1901 · Argelès-Gazost (65) · Survivre · Respecter · Partager
+  </footer>
+
+</div>
+
+<!-- ============ ENGLISH ============ -->
+<div class="lang-section" id="section-en">
+
+  <div class="hero">
+    <div class="logo-circle">🏔️</div>
+    <h1>SurviMont<br><span>Pyrénées</span></h1>
+    <p class="hero-sub">Survive · Respect · Share</p>
+    <p class="hero-tagline">Gentle wilderness survival experiences in the mountains</p>
+    <div class="hero-badges">
+      <span class="badge">👨‍👩‍👧‍👦 Families</span>
+      <span class="badge">🌿 Ecology</span>
+      <span class="badge">📍 Argelès-Gazost</span>
+      <span class="badge">📅 Year-round</span>
+    </div>
+    <span class="scroll-hint">↓ Discover</span>
+  </div>
+
+  <section class="fade-in">
+    <div class="section-label">Who we are</div>
+    <div class="section-title">Learning to live<br><span>with the mountain</span></div>
+    <div class="divider"></div>
+    <div class="concept-grid">
+      <div>
+        <p class="section-text">SurviMont Pyrénées offers immersive experiences to learn how to live in the mountains while respecting nature. Based in Argelès-Gazost, in the heart of the Pyrénées National Park, we welcome families, locals and tourists all year round.</p>
+        <p class="section-text" style="margin-top:20px">Every activity balances <strong>real skills</strong> with <strong>ecological awareness</strong>. We don't come to conquer the mountain — we come to learn how to live with it.</p>
+      </div>
+      <div class="concept-visual">
+        <div class="concept-item">
+          <div class="concept-icon">💧</div>
+          <div><h4>Purify water</h4><p>Understand the water cycle and the fragility of mountain springs</p></div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🦉</div>
+          <div><h4>Nocturnal observation</h4><p>Discover nocturnal wildlife and stargazing in the mountains</p></div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🔥</div>
+          <div><h4>Fire making (theory)</h4><p>Learn fire techniques and mountain fire safety</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="activities-section">
+    <div class="activities-inner fade-in">
+      <div class="section-label">Programme</div>
+      <div class="section-title" style="color:var(--cream)">Activities <span style="color:var(--sage)">all year</span></div>
+      <div class="divider"></div>
+      <div class="season-grid">
+        <div class="season-card">
+          <div class="season-icon">☀️</div>
+          <h3>Summer</h3>
+          <ul>
+            <li>Introduction bivouac</li>
+            <li>Nocturnal wildlife & stargazing</li>
+            <li>100% local & wild meals</li>
+            <li>Map & compass navigation</li>
+            <li>"Nature detective" missions for kids</li>
+            <li>Horse riding</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">❄️</div>
+          <h3>Winter</h3>
+          <ul>
+            <li>Movement & navigation in winter conditions</li>
+            <li>Recognise danger signs in snowy mountains</li>
+            <li>Manage gear & clothing to survive the cold</li>
+            <li>Signal position / call for help without network</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">🍂</div>
+          <h3>Mid-season</h3>
+          <ul>
+            <li>Knot-tying workshops indoors</li>
+            <li>Build a minimalist survival kit</li>
+            <li>Wilderness first aid</li>
+            <li>Cross-border exchanges</li>
+            <li>Seasonal observation walks</li>
+            <li>Horse riding</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eco-section">
+    <div class="eco-inner fade-in">
+      <div class="section-label">Our commitment</div>
+      <div class="section-title">A mountain <span>worth protecting</span></div>
+      <div class="divider"></div>
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-emoji">🌍</div>
+          <div><h4>Small groups</h4><p>Maximum 8-10 people per outing to reduce impact on vegetation and wildlife.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🗑️</div>
+          <div><h4>Zero waste</h4><p>Group weighing before and after every outing. No waste left behind.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🌱</div>
+          <div><h4>Route rotation</h4><p>Never the same trail twice in a row. Partnership with Pyrénées National Park.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🎒</div>
+          <div><h4>Gear provided</h4><p>All equipment provided on site — no need to buy, reducing consumption.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarifs-section fade-in">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Accessible <span>to everyone</span></div>
+    <div class="divider"></div>
+    <div class="tarif-cards">
+      <div class="tarif-card">
+        <div class="tarif-price">40€</div>
+        <span class="tarif-unit">per person</span>
+        <p class="tarif-desc">Full day in the mountains</p>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-price">75€</div>
+        <span class="tarif-unit">per person</span>
+        <p class="tarif-desc">2 days including overnight bivouac</p>
+      </div>
+    </div>
+    <p style="margin-top:24px; color:#6a7a60; font-size:0.9rem">Reduced rates available on request · All gear included</p>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-item"><div class="info-icon">📍</div><div class="info-label">Location</div><div class="info-val">Argelès-Gazost, 65400</div></div>
+    <div class="info-item"><div class="info-icon">📅</div><div class="info-label">Open</div><div class="info-val">Year-round</div></div>
+    <div class="info-item"><div class="info-icon">👨‍👩‍👧‍👦</div><div class="info-label">Audience</div><div class="info-val">Families & all levels</div></div>
+    <div class="info-item"><div class="info-icon">🌐</div><div class="info-label">Languages</div><div class="info-val">FR · EN · ES</div></div>
+  </div>
+
+  <div class="contact-section fade-in">
+    <div class="section-label">Get in touch</div>
+    <div class="section-title">Ready to head <span>into the mountains?</span></div>
+    <div class="divider" style="margin:20px auto 0"></div>
+    <div class="contact-cards">
+      <a href="mailto:contact@survimont.fr" class="contact-card"><span class="cc-icon">✉️</span> contact@survimont.fr</a>
+      <a href="https://instagram.com/survimon65000" class="contact-card"><span class="cc-icon">📸</span> @survimon65000</a>
+      <a href="https://facebook.com/survimon65000" class="contact-card"><span class="cc-icon">📘</span> survimon65000</a>
+    </div>
+  </div>
+
+  <footer>
+    <strong>SurviMont Pyrénées</strong> · Non-profit association · Argelès-Gazost (65) · Survive · Respect · Share
+  </footer>
+
+</div>
+
+<!-- ============ ESPAÑOL ============ -->
+<div class="lang-section" id="section-es">
+
+  <div class="hero">
+    <div class="logo-circle">🏔️</div>
+    <h1>SurviMont<br><span>Pyrénées</span></h1>
+    <p class="hero-sub">Sobrevivir · Respetar · Compartir</p>
+    <p class="hero-tagline">Experiencias de supervivencia suave en la montaña</p>
+    <div class="hero-badges">
+      <span class="badge">👨‍👩‍👧‍👦 Familias</span>
+      <span class="badge">🌿 Ecología</span>
+      <span class="badge">📍 Argelès-Gazost</span>
+      <span class="badge">📅 Todo el año</span>
+    </div>
+    <span class="scroll-hint">↓ Descubrir</span>
+  </div>
+
+  <section class="fade-in">
+    <div class="section-label">Quiénes somos</div>
+    <div class="section-title">Aprender a vivir<br><span>con la montaña</span></div>
+    <div class="divider"></div>
+    <div class="concept-grid">
+      <div>
+        <p class="section-text">SurviMont Pyrénées ofrece experiencias inmersivas para aprender a vivir en la montaña respetando la naturaleza. Con base en Argelès-Gazost, en el corazón del Parque Nacional de los Pirineos, acogemos a familias, locales y turistas durante todo el año.</p>
+        <p class="section-text" style="margin-top:20px">Cada actividad equilibra <strong>aprendizaje real</strong> con <strong>conciencia ecológica</strong>. No venimos a conquistar la montaña — venimos a aprender a convivir con ella.</p>
+      </div>
+      <div class="concept-visual">
+        <div class="concept-item">
+          <div class="concept-icon">💧</div>
+          <div><h4>Purificar el agua</h4><p>Entender el ciclo del agua y la fragilidad de los manantiales de montaña</p></div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🦉</div>
+          <div><h4>Observación nocturna</h4><p>Descubrir la fauna nocturna y la astronomía en la montaña</p></div>
+        </div>
+        <div class="concept-item">
+          <div class="concept-icon">🔥</div>
+          <div><h4>Hacer fuego (teórico)</h4><p>Aprender las técnicas y la seguridad contra incendios en la montaña</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="activities-section">
+    <div class="activities-inner fade-in">
+      <div class="section-label">Programa</div>
+      <div class="section-title" style="color:var(--cream)">Actividades <span style="color:var(--sage)">todo el año</span></div>
+      <div class="divider"></div>
+      <div class="season-grid">
+        <div class="season-card">
+          <div class="season-icon">☀️</div>
+          <h3>Verano</h3>
+          <ul>
+            <li>Iniciación al vivac</li>
+            <li>Observación de fauna nocturna y estrellas</li>
+            <li>Comida 100% natural y local</li>
+            <li>Orientación con brújula y lectura del paisaje</li>
+            <li>Misiones "detective de la naturaleza" para niños</li>
+            <li>Paseo a caballo</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">❄️</div>
+          <h3>Invierno</h3>
+          <ul>
+            <li>Técnicas de desplazamiento y orientación en condiciones invernales</li>
+            <li>Reconocer señales de peligro en montaña nevada</li>
+            <li>Gestionar equipo y ropa para sobrevivir al frío</li>
+            <li>Señalizar posición / llamar a socorro sin red</li>
+          </ul>
+        </div>
+        <div class="season-card">
+          <div class="season-icon">🍂</div>
+          <h3>Temporada media</h3>
+          <ul>
+            <li>Talleres de nudos en sala</li>
+            <li>Fabricar un kit de supervivencia minimalista</li>
+            <li>Primeros auxilios en la naturaleza</li>
+            <li>Intercambios transfronterizos</li>
+            <li>Salidas de observación estacional</li>
+            <li>Paseo a caballo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eco-section">
+    <div class="eco-inner fade-in">
+      <div class="section-label">Nuestro compromiso</div>
+      <div class="section-title">Una montaña <span>que proteger</span></div>
+      <div class="divider"></div>
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-emoji">🌍</div>
+          <div><h4>Grupos reducidos</h4><p>Máximo 8-10 personas por salida para reducir el impacto sobre la vegetación y la fauna.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🗑️</div>
+          <div><h4>Cero residuos</h4><p>Pesaje colectivo antes y después de cada salida. Sin basura en el terreno.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🌱</div>
+          <div><h4>Rotación de rutas</h4><p>Nunca el mismo sendero dos semanas seguidas. Colaboración con el Parque Nacional de los Pirineos.</p></div>
+        </div>
+        <div class="eco-card">
+          <div class="eco-emoji">🎒</div>
+          <div><h4>Material prestado</h4><p>Todo el material se proporciona en el lugar — sin necesidad de comprar, reduciendo el consumo.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarifs-section fade-in">
+    <div class="section-label">Precios</div>
+    <div class="section-title">Accesible <span>para todos</span></div>
+    <div class="divider"></div>
+    <div class="tarif-cards">
+      <div class="tarif-card">
+        <div class="tarif-price">40€</div>
+        <span class="tarif-unit">por persona</span>
+        <p class="tarif-desc">Jornada completa en la montaña</p>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-price">75€</div>
+        <span class="tarif-unit">por persona</span>
+        <p class="tarif-desc">2 días con noche de vivac incluida</p>
+      </div>
+    </div>
+    <p style="margin-top:24px; color:#6a7a60; font-size:0.9rem">Tarifas reducidas disponibles · Material incluido</p>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-item"><div class="info-icon">📍</div><div class="info-label">Ubicación</div><div class="info-val">Argelès-Gazost, 65400</div></div>
+    <div class="info-item"><div class="info-icon">📅</div><div class="info-label">Abierto</div><div class="info-val">Todo el año</div></div>
+    <div class="info-item"><div class="info-icon">👨‍👩‍👧‍👦</div><div class="info-label">Público</div><div class="info-val">Familias y todos los niveles</div></div>
+    <div class="info-item"><div class="info-icon">🌐</div><div class="info-label">Idiomas</div><div class="info-val">FR · EN · ES</div></div>
+  </div>
+
+  <div class="contact-section fade-in">
+    <div class="section-label">Contacto</div>
+    <div class="section-title">¿Listos para <span>la montaña?</span></div>
+    <div class="divider" style="margin:20px auto 0"></div>
+    <div class="contact-cards">
+      <a href="mailto:contact@survimont.fr" class="contact-card"><span class="cc-icon">✉️</span> contact@survimont.fr</a>
+      <a href="https://instagram.com/survimon65000" class="contact-card"><span class="cc-icon">📸</span> @survimon65000</a>
+      <a href="https://facebook.com/survimon65000" class="contact-card"><span class="cc-icon">📘</span> survimon65000</a>
+    </div>
+  </div>
+
+  <footer>
+    <strong>SurviMont Pyrénées</strong> · Asociación sin ánimo de lucro · Argelès-Gazost (65) · Sobrevivir · Respetar · Compartir
+  </footer>
+
+</div>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + lang).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    observeFadeIns();
+  }
+
+  function observeFadeIns() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.lang-section.active .fade-in').forEach(el => {
+      observer.observe(el);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', observeFadeIns);
+</script>
+</body>
+</html>
